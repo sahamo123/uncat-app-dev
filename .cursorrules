@@ -1,0 +1,6 @@
+# Agent Rules
+
+## MCP Tool Management
+- **Dynamic Permissions**: You have permission to modify `mcp_config.json` to enable or disable MCP tools as needed for your current task.
+- **Tool Limit**: Always aim to keep the total enabled tool count below 50 for optimal performance.
+- **Action Protocol**: If a required tool is disabled, enable it immediately, perform the action, and then verify if you need to disable other unused tools to maintain the limit.

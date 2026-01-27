@@ -1,69 +1,36 @@
-# Uncat App
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-An AI-powered bookkeeping SaaS platform for QuickBooks Online, similar to Booke.ai.
+## Getting Started
 
-## 🎯 Project Overview
+First, run the development server:
 
-Uncat App is a multi-tenant SaaS application that provides:
-- **AI Bookkeeper**: Intelligent transaction categorization and bookkeeping assistance
-- **QuickBooks Integration**: Seamless sync with QuickBooks Online
-- **Multi-tenant Architecture**: Support for accounting firms managing multiple clients
-- **Practice Management**: Tools for accountants to manage their clients efficiently
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-## 📚 Documentation
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-All project documentation is organized in the [`docs/`](./docs/) directory:
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-- **[Getting Started](./docs/planning/PROJECT_SUMMARY.md)** - High-level project overview
-- **[Architecture](./docs/architecture/)** - System architecture and technical specs
-- **[Implementation Plan](./docs/planning/implementation_plan.md)** - Development roadmap
-- **[Setup Guide](./docs/deployment/setup_checklist.md)** - Setup instructions
-- **[Cost Breakdown](./docs/planning/cost_breakdown.md)** - Budget and cost analysis
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-See the [docs README](./docs/README.md) for complete documentation index.
+## Learn More
 
-## 🚀 Quick Start
+To learn more about Next.js, take a look at the following resources:
 
-1. Review the [PROJECT_SUMMARY.md](./docs/planning/PROJECT_SUMMARY.md) for project overview
-2. Follow the [setup_checklist.md](./docs/deployment/setup_checklist.md) for environment setup
-3. Check [implementation_plan.md](./docs/planning/implementation_plan.md) for development approach
-4. Review [tasks.md](./docs/planning/tasks.md) for current task list
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## 🛠️ Tech Stack
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-- **Frontend**: Next.js, React, TypeScript
-- **Backend**: Supabase (PostgreSQL, Auth, Storage)
-- **AI/ML**: OpenAI GPT-4, RAG (Retrieval-Augmented Generation)
-- **Integrations**: QuickBooks Online API, Stripe
-- **Hosting**: Vercel (frontend), Supabase (backend)
+## Deploy on Vercel
 
-## 📋 Project Status
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-See [tasks.md](./docs/planning/tasks.md) for current progress and task tracking.
-
-## 🔐 Security & Credentials
-
-Required credentials and API keys are documented in [required_credentials.md](./docs/deployment/required_credentials.md).
-
-**⚠️ Never commit credentials to version control!** Use environment variables and `.env.local` files.
-
-## 📖 Key Documentation Files
-
-- **Architecture**: [architecture.md](./docs/architecture/architecture.md)
-- **ML Architecture**: [ml_architecture.md](./docs/architecture/ml_architecture.md)
-- **Cost Analysis**: [cost_breakdown.md](./docs/planning/cost_breakdown.md)
-- **Database Schema**: [supabase_setup.sql](./docs/database/supabase_setup.sql)
-- **AI Decision Tree**: [decision_tree_logic.json](./docs/ai/decision_tree_logic.json)
-
-## 🧪 Testing
-
-Testing documentation is available in [`docs/testing/`](./docs/testing/):
-- [testing_strategy.md](./docs/testing/testing_strategy.md) - Overall testing approach
-- [testing_spec.md](./docs/testing/testing_spec.md) - Detailed test specifications
-
-## 📞 Support
-
-For questions or issues, refer to the relevant documentation in the `docs/` directory.
-
----
-**Last Updated**: 2026-01-22
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

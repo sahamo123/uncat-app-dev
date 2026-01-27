@@ -48,10 +48,10 @@ git push origin main
 
 ### Phase 1: Foundation (Weeks 1-3)
 **Goal**: Secure multi-tenant platform with billing.
-- [ ] **Infrastructure**: Next.js + Supabase setup
-- [ ] **Auth**: Clerk (Multi-tenancy + Organizations)
-- [ ] **Security**: RLS policies on all tables
-- [ ] **Billing**: Stripe integration (subscriptions + metering)
+- [x] **Infrastructure**: Next.js + Supabase setup
+- [x] **Auth**: Clerk (Multi-tenancy + Organizations)
+- [x] **Security**: RLS policies on all tables
+- [x] **Billing**: Stripe integration (subscriptions + metering)
 - [ ] **Testing**: Automated tenant isolation tests
 
 **Verification**: 
@@ -63,7 +63,7 @@ git push origin main
 
 ### Phase 2: Data & Documents (Weeks 4-9)
 **Goal**: Connect to QuickBooks and automate document processing.
-- [ ] **QBO Integration**: OAuth + Transaction Sync (Sandbox first)
+- [/] **QBO Integration**: OAuth (Done) + Transaction Sync (Pending)
 - [ ] **Email Ingestion**: receipts@tenant.daxhive.com
 - [ ] **OCR Pipeline**: OpenAI Vision API extraction
 - [ ] **Auto-Matching**: Documents ↔ QBO transactions
