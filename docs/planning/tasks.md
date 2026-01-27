@@ -43,6 +43,7 @@
 ### Phase 3: Intelligence
 - [/] **RAG Pipeline** (Vector Embeddings) - *Implemented V1*
 - [/] **Reconciliation Engine** (Clearing Account Logic) - *Rule-Based Logic Implemented*
+- [x] **Decision Tree UI** (Client-side categorization wizard)
 - [ ] **Audit System** (Anomaly Detection)
 
 ### Phase 4: Communication
