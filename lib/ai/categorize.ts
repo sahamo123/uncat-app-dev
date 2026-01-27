@@ -1,16 +1,12 @@
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '../supabase-admin';
 import { generateEmbedding } from './embeddings';
 import { openai } from './client';
-
-// Initialize Admin Client
-const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { createClient } from '@supabase/supabase-js';
 
 const UNCATEGORIZED_KEYWORDS = ['Uncategorized', 'Ask My Accountant', 'Suspense', 'Uncategorized Expense', 'Uncategorized Income'];
 
 export async function processUncategorizedTransactions(tenantId: string) {
+    const supabaseAdmin = getSupabaseAdmin();
     console.log(`[AI] Processing tenant: ${tenantId}`);
 
     // 1. Identify Uncategorized Accounts for this tenant
@@ -23,10 +19,10 @@ export async function processUncategorizedTransactions(tenantId: string) {
     if (!accounts) return;
 
     const uncategorizedAccountIds = accounts
-        .filter(acc =>
+        .filter((acc: any) =>
             UNCATEGORIZED_KEYWORDS.some(k => acc.name.includes(k) || acc.account_sub_type?.includes(k))
         )
-        .map(acc => acc.id);
+        .map((acc: any) => acc.id);
 
     // Also include transactions with NO account assigned (if nullable)
     // Query transactions that are either in an uncategorized account OR have no account
@@ -55,7 +51,7 @@ export async function processUncategorizedTransactions(tenantId: string) {
 
     for (const txn of transactions) {
         // --- RULE BASED MATCHING ---
-        const matchedRule = rules?.find(r =>
+        const matchedRule = rules?.find((r: any) =>
             (txn.payee_name && txn.payee_name.toLowerCase().includes(r.keyword.toLowerCase())) ||
             (txn.description && txn.description.toLowerCase().includes(r.keyword.toLowerCase()))
         );
@@ -82,6 +78,7 @@ export async function processUncategorizedTransactions(tenantId: string) {
 }
 
 async function categorizeTransaction(tenantId: string, txn: any) {
+    const supabaseAdmin = getSupabaseAdmin();
     try {
         // A. Generate Embedding for this transaction
         const searchText = `${txn.payee_name} ${txn.description} ${txn.amount}`;
@@ -113,7 +110,7 @@ async function categorizeTransaction(tenantId: string, txn: any) {
             .eq('tenant_id', tenantId);
 
         // Filter out obvious bad targets (like "Uncategorized", "Opening Balance", etc.)
-        const candidateAccounts = (allAccounts || []).filter(acc =>
+        const candidateAccounts = (allAccounts || []).filter((acc: any) =>
             !UNCATEGORIZED_KEYWORDS.some(k => acc.name.includes(k))
         );
 

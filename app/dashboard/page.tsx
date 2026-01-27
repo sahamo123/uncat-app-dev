@@ -1,17 +1,12 @@
 import { auth } from '@clerk/nextjs/server';
-import { createClient } from '@supabase/supabase-js';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import TransactionReview from './transaction-review';
-
-// Initialize Admin Client (for fetching safe data)
-const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { getSupabaseAdmin } from '@/lib/supabase-admin';
 
 async function getReviewData(userId: string) {
+    const supabaseAdmin = getSupabaseAdmin();
     // 1. Get Tenant
     const { data: tenant } = await supabaseAdmin
         .from('tenants')

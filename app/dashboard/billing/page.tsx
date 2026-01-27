@@ -1,14 +1,10 @@
 import { auth } from '@clerk/nextjs/server';
-import { createClient } from '@supabase/supabase-js';
 import { CreditCard, Check, Zap, Server } from 'lucide-react';
 import { redirect } from 'next/navigation';
-
-const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { getSupabaseAdmin } from '@/lib/supabase-admin';
 
 async function getSubscription(userId: string) {
+    const supabaseAdmin = getSupabaseAdmin();
     // 1. Get Tenant
     const { data: tenant } = await supabaseAdmin
         .from('tenants')
@@ -97,8 +93,8 @@ export default async function BillingPage() {
 
                     <form action={isPro ? '/api/stripe/portal' : '/api/stripe/checkout'} method="POST">
                         <button className={`w-full py-2.5 rounded-lg font-medium transition-colors shadow-sm ${isPro
-                                ? 'bg-secondary hover:bg-secondary/80 text-secondary-foreground'
-                                : 'bg-primary hover:bg-primary/90 text-primary-foreground'
+                            ? 'bg-secondary hover:bg-secondary/80 text-secondary-foreground'
+                            : 'bg-primary hover:bg-primary/90 text-primary-foreground'
                             }`}>
                             {isPro ? 'Manage Subscription' : 'Upgrade to Pro'}
                         </button>

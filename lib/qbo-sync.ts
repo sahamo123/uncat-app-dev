@@ -1,12 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from './supabase-admin';
 import { getQBOClient } from './quickbooks';
 import OAuthClient from 'intuit-oauth';
-
-// Initialize Admin Supabase Client (Service Role)
-const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { createClient } from '@supabase/supabase-js';
 
 interface QboConnection {
     realm_id: string;
@@ -17,6 +12,7 @@ interface QboConnection {
 }
 
 export async function performSync(tenantId: string) {
+    const supabaseAdmin = getSupabaseAdmin();
     console.log(`[Sync] Starting sync for tenant: ${tenantId}`);
 
     try {
@@ -138,6 +134,7 @@ async function fetchRecentTransactions(client: any, realmId: string) {
 }
 
 async function saveAccounts(tenantId: string, accounts: any[]) {
+    const supabaseAdmin = getSupabaseAdmin();
     if (!accounts.length) return;
 
     const upsertData = accounts.map((acc: any) => ({
@@ -159,6 +156,7 @@ async function saveAccounts(tenantId: string, accounts: any[]) {
 }
 
 async function saveTransactions(tenantId: string, transactions: any[]) {
+    const supabaseAdmin = getSupabaseAdmin();
     if (!transactions.length) return;
 
     const upsertData = transactions.map((txn: any) => {

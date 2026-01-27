@@ -1,15 +1,12 @@
 import { NextResponse } from 'next/server';
 import { performSync } from '@/lib/qbo-sync';
 import { auth } from '@clerk/nextjs/server';
-import { createClient } from '@supabase/supabase-js';
-
-// Init DB to find tenant from user
-const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { getSupabaseAdmin } from '@/lib/supabase-admin';
 
 export async function POST(req: Request) {
+    // Init DB to find tenant from user
+    const supabaseAdmin = getSupabaseAdmin();
+
     const { userId } = await auth();
     if (!userId) {
         return new NextResponse("Unauthorized", { status: 401 });

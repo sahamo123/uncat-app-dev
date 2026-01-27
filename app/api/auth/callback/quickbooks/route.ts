@@ -1,14 +1,11 @@
 import { NextResponse } from 'next/server';
 import { getQBOClient } from '@/lib/quickbooks';
-import { createClient } from '@supabase/supabase-js';
-
-// Initialize Admin Supabase Client to bypass RLS for token storage
-const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { getSupabaseAdmin } from '@/lib/supabase-admin';
 
 export async function GET(req: Request) {
+    // Initialize Admin Supabase Client to bypass RLS for token storage
+    const supabaseAdmin = getSupabaseAdmin();
+
     const { searchParams } = new URL(req.url);
     const state = searchParams.get('state'); // This is the userId
     const code = searchParams.get('code');

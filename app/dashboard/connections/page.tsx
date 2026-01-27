@@ -1,16 +1,12 @@
 import { auth } from '@clerk/nextjs/server';
-import { createClient } from '@supabase/supabase-js';
 import { CheckCircle2, XCircle, RefreshCw, Link2Off, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import SyncButton from './sync-button';
-
-const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { getSupabaseAdmin } from '@/lib/supabase-admin';
 
 async function getConnectionStatus(userId: string) {
+    const supabaseAdmin = getSupabaseAdmin();
     const { data: tenant } = await supabaseAdmin
         .from('tenants')
         .select(`
