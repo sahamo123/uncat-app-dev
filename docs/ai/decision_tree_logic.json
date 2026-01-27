@@ -1,0 +1,791 @@
+{
+    "version": "2.0",
+    "description": "Comprehensive decision tree for AI-assisted transaction categorization",
+    "rootNode": "transaction_direction",
+    "nodes": {
+        "transaction_direction": {
+            "question": "Is this money going OUT of your business account or coming IN?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Money OUT (Expense/Payment)",
+                    "next": "expense_type"
+                },
+                {
+                    "label": "Money IN (Income/Receipt)",
+                    "next": "income_type"
+                },
+                {
+                    "label": "Internal Transfer",
+                    "next": "transfer_type"
+                }
+            ]
+        },
+        "expense_type": {
+            "question": "What type of expense is this?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Operating Expense (regular business costs)",
+                    "next": "operating_category"
+                },
+                {
+                    "label": "Asset Purchase (equipment, property, etc.)",
+                    "next": "asset_type"
+                },
+                {
+                    "label": "Tax Payment",
+                    "next": "tax_type"
+                },
+                {
+                    "label": "Loan/Credit Payment",
+                    "next": "debt_payment"
+                },
+                {
+                    "label": "Owner Draw/Distribution",
+                    "next": "owner_transaction"
+                }
+            ]
+        },
+        "operating_category": {
+            "question": "Which category best describes this expense?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Advertising & Marketing",
+                    "next": "marketing_detail"
+                },
+                {
+                    "label": "Office Supplies & Software",
+                    "next": "office_detail"
+                },
+                {
+                    "label": "Meals & Entertainment",
+                    "next": "meals_detail"
+                },
+                {
+                    "label": "Travel & Transportation",
+                    "next": "travel_detail"
+                },
+                {
+                    "label": "Utilities & Rent",
+                    "next": "utilities_detail"
+                },
+                {
+                    "label": "Professional Services",
+                    "next": "professional_detail"
+                },
+                {
+                    "label": "Employee Costs",
+                    "next": "employee_detail"
+                },
+                {
+                    "label": "Inventory/Cost of Goods Sold",
+                    "next": "cogs_detail"
+                },
+                {
+                    "label": "Insurance",
+                    "next": "insurance_detail"
+                },
+                {
+                    "label": "Other",
+                    "next": "other_expense"
+                }
+            ]
+        },
+        "marketing_detail": {
+            "question": "What kind of marketing expense?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Online Ads (Google, Facebook, LinkedIn)",
+                    "category": "Advertising:Online",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Print/Traditional Marketing",
+                    "category": "Advertising:Print",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Website Hosting/Domain",
+                    "category": "Advertising:Website",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Marketing Agency/Consultant",
+                    "category": "Advertising:Agency",
+                    "confidence": 0.90
+                },
+                {
+                    "label": "Promotional Materials",
+                    "category": "Advertising:Promotional",
+                    "confidence": 0.90
+                }
+            ]
+        },
+        "office_detail": {
+            "question": "What type of office expense?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Software Subscription (SaaS)",
+                    "next": "software_detail"
+                },
+                {
+                    "label": "Office Supplies (pens, paper, etc.)",
+                    "category": "Office Supplies",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Postage & Shipping",
+                    "category": "Postage",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Printing & Copying",
+                    "category": "Printing",
+                    "confidence": 0.90
+                }
+            ]
+        },
+        "software_detail": {
+            "question": "Is this software essential for your business operations?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Yes - Core business software",
+                    "category": "Software Subscriptions:Essential",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Yes - Productivity/collaboration tools",
+                    "category": "Software Subscriptions:Productivity",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Possibly - Nice to have",
+                    "category": "Software Subscriptions:Optional",
+                    "confidence": 0.85
+                }
+            ]
+        },
+        "meals_detail": {
+            "question": "What was the business purpose of this meal?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Client meeting/entertainment",
+                    "next": "client_meal"
+                },
+                {
+                    "label": "Team meeting/working lunch",
+                    "category": "Meals & Entertainment:Team",
+                    "confidence": 0.90,
+                    "taxNote": "50% deductible"
+                },
+                {
+                    "label": "Business travel meal",
+                    "category": "Meals & Entertainment:Travel",
+                    "confidence": 0.95,
+                    "taxNote": "50% deductible"
+                },
+                {
+                    "label": "Office snacks/coffee for team",
+                    "category": "Meals & Entertainment:Office",
+                    "confidence": 0.95,
+                    "taxNote": "100% deductible"
+                },
+                {
+                    "label": "Personal meal",
+                    "category": "Owner Draw",
+                    "confidence": 0.80,
+                    "taxNote": "Non-deductible"
+                }
+            ]
+        },
+        "client_meal": {
+            "question": "Was a specific business deal or opportunity discussed?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Yes - Specific business discussed",
+                    "category": "Meals & Entertainment:Client",
+                    "confidence": 0.95,
+                    "taxNote": "50% deductible"
+                },
+                {
+                    "label": "No - General relationship building",
+                    "category": "Meals & Entertainment:Networking",
+                    "confidence": 0.85,
+                    "taxNote": "50% deductible"
+                }
+            ]
+        },
+        "travel_detail": {
+            "question": "What type of travel expense?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Airfare/Train",
+                    "category": "Travel:Transportation",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Hotel/Lodging",
+                    "category": "Travel:Lodging",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Rental Car",
+                    "category": "Travel:Car Rental",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Parking & Tolls",
+                    "category": "Travel:Parking",
+                    "confidence": 0.90
+                },
+                {
+                    "label": "Personal Vehicle Mileage",
+                    "next": "vehicle_usage"
+                },
+                {
+                    "label": "Ride Share (Uber/Lyft)",
+                    "next": "rideshare_purpose"
+                }
+            ]
+        },
+        "vehicle_usage": {
+            "question": "Do you use this vehicle for both business and personal use?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "100% business use only",
+                    "category": "Auto & Truck Expenses:Dedicated",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Mixed business & personal",
+                    "next": "vehicle_percentage"
+                },
+                {
+                    "label": "Mostly personal with some business",
+                    "next": "vehicle_percentage"
+                }
+            ]
+        },
+        "vehicle_percentage": {
+            "question": "What percentage is business use? (Keep mileage log!)",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "More than 75%",
+                    "category": "Auto & Truck Expenses:Business",
+                    "confidence": 0.90,
+                    "taxNote": "Deduct business %"
+                },
+                {
+                    "label": "50-75%",
+                    "category": "Auto & Truck Expenses:Mixed",
+                    "confidence": 0.85,
+                    "taxNote": "Deduct business %"
+                },
+                {
+                    "label": "Less than 50%",
+                    "category": "Auto & Truck Expenses:Mixed",
+                    "confidence": 0.80,
+                    "taxNote": "Deduct business %, keep detailed log"
+                }
+            ]
+        },
+        "rideshare_purpose": {
+            "question": "What was the business purpose?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "To/from airport for business trip",
+                    "category": "Travel:Ground Transportation",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "To client meeting",
+                    "category": "Auto & Truck Expenses:Business",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "To office/work location",
+                    "category": "Auto & Truck Expenses:Commute",
+                    "confidence": 0.85,
+                    "taxNote": "Commuting may not be deductible"
+                },
+                {
+                    "label": "Personal errand",
+                    "category": "Owner Draw",
+                    "confidence": 0.80,
+                    "taxNote": "Non-deductible"
+                }
+            ]
+        },
+        "utilities_detail": {
+            "question": "What type of utility or facility expense?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Office Rent (dedicated space)",
+                    "category": "Rent:Office",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Home Office (part of home)",
+                    "next": "home_office"
+                },
+                {
+                    "label": "Electricity/Gas/Water",
+                    "category": "Utilities",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Internet/Phone",
+                    "next": "communication_type"
+                },
+                {
+                    "label": "Storage Unit",
+                    "category": "Rent:Storage",
+                    "confidence": 0.90
+                }
+            ]
+        },
+        "home_office": {
+            "question": "Is this space used EXCLUSIVELY for business?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Yes - 100% business use only",
+                    "category": "Home Office Expense",
+                    "confidence": 0.95,
+                    "taxNote": "Deduct based on square footage %"
+                },
+                {
+                    "label": "No - Mixed personal/business use",
+                    "category": "Rent:Personal",
+                    "confidence": 0.70,
+                    "taxNote": "May not be fully deductible"
+                }
+            ]
+        },
+        "communication_type": {
+            "question": "Is this phone/internet used exclusively for business?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Yes - Business line/account only",
+                    "category": "Telephone & Internet:Business",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "No - Personal phone with business use",
+                    "category": "Telephone & Internet:Mixed",
+                    "confidence": 0.85,
+                    "taxNote": "Deduct business % only"
+                }
+            ]
+        },
+        "professional_detail": {
+            "question": "What type of professional service?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Legal Fees",
+                    "category": "Legal & Professional Fees:Legal",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Accounting/Bookkeeping",
+                    "category": "Legal & Professional Fees:Accounting",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Consultant/Contractor",
+                    "next": "contractor_detail"
+                },
+                {
+                    "label": "Bank Fees/Merchant Fees",
+                    "category": "Bank Charges",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Licensing & Permits",
+                    "category": "Licenses & Permits",
+                    "confidence": 0.95
+                }
+            ]
+        },
+        "contractor_detail": {
+            "question": "Is this person an independent contractor (you'll issue 1099)?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Yes - Contractor ($600+ annually)",
+                    "category": "Contract Labor",
+                    "confidence": 0.95,
+                    "flagFor1099": true
+                },
+                {
+                    "label": "Yes - Contractor (under $600)",
+                    "category": "Contract Labor",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "No - They're an employee",
+                    "category": "Payroll Expenses",
+                    "confidence": 0.90
+                }
+            ]
+        },
+        "employee_detail": {
+            "question": "What type of employee cost?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Salary/Wages",
+                    "category": "Payroll Expenses:Wages",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Payroll Taxes",
+                    "category": "Payroll Expenses:Taxes",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Benefits (health insurance, etc.)",
+                    "category": "Employee Benefits",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Team Training/Development",
+                    "category": "Employee Benefits:Training",
+                    "confidence": 0.90
+                }
+            ]
+        },
+        "cogs_detail": {
+            "question": "Is this for products you sell (inventory)?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Yes - Raw materials/inventory",
+                    "category": "Cost of Goods Sold:Materials",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Yes - Finished goods for resale",
+                    "category": "Cost of Goods Sold:Inventory",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Shipping costs for products sold",
+                    "category": "Cost of Goods Sold:Shipping",
+                    "confidence": 0.90
+                },
+                {
+                    "label": "Not for resale",
+                    "next": "operating_category"
+                }
+            ]
+        },
+        "insurance_detail": {
+            "question": "What type of insurance?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "General Liability Insurance",
+                    "category": "Insurance:Liability",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Professional Liability (E&O)",
+                    "category": "Insurance:Professional",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Vehicle Insurance (business vehicle)",
+                    "category": "Insurance:Auto",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Health Insurance (for employees)",
+                    "category": "Employee Benefits:Health",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Health Insurance (owner)",
+                    "category": "Insurance:Health",
+                    "confidence": 0.90,
+                    "taxNote": "May be personal expense"
+                }
+            ]
+        },
+        "asset_type": {
+            "question": "What kind of asset did you purchase?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Computer/Laptop (under $2,500)",
+                    "category": "Office Equipment:Computers",
+                    "confidence": 0.95,
+                    "taxNote": "May expense immediately"
+                },
+                {
+                    "label": "Computer/Laptop (over $2,500)",
+                    "category": "Fixed Assets:Computers",
+                    "confidence": 0.95,
+                    "taxNote": "Depreciate over time"
+                },
+                {
+                    "label": "Office Furniture",
+                    "category": "Fixed Assets:Furniture",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Vehicle",
+                    "category": "Fixed Assets:Vehicles",
+                    "confidence": 0.95,
+                    "taxNote": "Section 179 may apply"
+                },
+                {
+                    "label": "Machinery/Equipment",
+                    "category": "Fixed Assets:Equipment",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Building/Real Estate",
+                    "category": "Fixed Assets:Real Estate",
+                    "confidence": 0.95
+                }
+            ]
+        },
+        "tax_type": {
+            "question": "What type of tax payment?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Federal Income Tax",
+                    "category": "Tax Payments:Federal Income",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "State Income Tax",
+                    "category": "Tax Payments:State Income",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Sales Tax Remittance",
+                    "category": "Tax Payments:Sales Tax",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Payroll Taxes",
+                    "category": "Payroll Expenses:Taxes",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Property Tax",
+                    "category": "Tax Payments:Property",
+                    "confidence": 0.95
+                }
+            ]
+        },
+        "debt_payment": {
+            "question": "Is this payment for principal, interest, or both?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Interest only",
+                    "category": "Interest Expense",
+                    "confidence": 0.95,
+                    "taxNote": "Deductible"
+                },
+                {
+                    "label": "Principal only",
+                    "category": "Loan Repayment:Principal",
+                    "confidence": 0.95,
+                    "taxNote": "Not deductible"
+                },
+                {
+                    "label": "Both principal & interest",
+                    "next": "split_payment"
+                }
+            ]
+        },
+        "split_payment": {
+            "question": "Can you see the interest amount on your statement?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Yes - I know the split",
+                    "category": "Loan Payment:Mixed",
+                    "confidence": 0.90,
+                    "instruction": "Split into Interest Expense (deductible) and Principal (not deductible)"
+                },
+                {
+                    "label": "No - Auto-payment not detailed",
+                    "category": "Loan Payment:Mixed",
+                    "confidence": 0.85,
+                    "instruction": "Request loan statement to split properly"
+                }
+            ]
+        },
+        "owner_transaction": {
+            "question": "Is this a legitimate business expense or personal?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Personal expense paid from business",
+                    "category": "Owner Draw",
+                    "confidence": 0.95,
+                    "taxNote": "Not deductible"
+                },
+                {
+                    "label": "Distribution/Dividend",
+                    "category": "Owner Distribution",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "It's actually a business expense",
+                    "next": "expense_type"
+                }
+            ]
+        },
+        "income_type": {
+            "question": "What type of income is this?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Customer Payment (for services/products)",
+                    "next": "revenue_type"
+                },
+                {
+                    "label": "Interest Income",
+                    "category": "Interest Income",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Loan Proceeds",
+                    "category": "Loan Proceeds",
+                    "confidence": 0.95,
+                    "taxNote": "Not taxable income"
+                },
+                {
+                    "label": "Owner Contribution/Investment",
+                    "category": "Owner Contribution",
+                    "confidence": 0.95,
+                    "taxNote": "Not taxable income"
+                },
+                {
+                    "label": "Refund/Credit",
+                    "next": "refund_type"
+                }
+            ]
+        },
+        "revenue_type": {
+            "question": "Is this for products or services?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Services rendered",
+                    "category": "Service Revenue",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Product sales",
+                    "category": "Product Revenue",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "Recurring subscription/retainer",
+                    "category": "Recurring Revenue",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "One-time project",
+                    "category": "Project Revenue",
+                    "confidence": 0.90
+                }
+            ]
+        },
+        "refund_type": {
+            "question": "What is this refund for?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Tax refund",
+                    "category": "Tax Refund",
+                    "confidence": 0.95,
+                    "taxNote": "May not be taxable"
+                },
+                {
+                    "label": "Vendor refund/credit",
+                    "category": "Expense Refund",
+                    "confidence": 0.90,
+                    "instruction": "Offset against original expense"
+                },
+                {
+                    "label": "Customer refund (you're refunding them)",
+                    "category": "Refunds Issued",
+                    "confidence": 0.95
+                }
+            ]
+        },
+        "transfer_type": {
+            "question": "Where is the money moving?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "Between business bank accounts",
+                    "category": "Transfer",
+                    "confidence": 0.95,
+                    "instruction": "Exclude from P&L"
+                },
+                {
+                    "label": "To/from business & personal account",
+                    "next": "personal_transfer"
+                },
+                {
+                    "label": "To savings/reserve account",
+                    "category": "Transfer:Savings",
+                    "confidence": 0.95
+                }
+            ]
+        },
+        "personal_transfer": {
+            "question": "Is money moving TO business or FROM business?",
+            "type": "choice",
+            "options": [
+                {
+                    "label": "TO business (capital injection)",
+                    "category": "Owner Contribution",
+                    "confidence": 0.95
+                },
+                {
+                    "label": "FROM business (owner draw)",
+                    "category": "Owner Draw",
+                    "confidence": 0.95
+                }
+            ]
+        },
+        "other_expense": {
+            "question": "Can you describe this expense briefly?",
+            "type": "text_input",
+            "category": "Other Expenses",
+            "confidence": 0.70,
+            "instruction": "AI will analyze description and suggest category"
+        }
+    },
+    "metadata": {
+        "created": "2026-01-22",
+        "max_depth": 5,
+        "total_questions": 50,
+        "categories_covered": 60
+    }
+}
