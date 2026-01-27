@@ -108,6 +108,10 @@ async function runTest() {
         if (approveErr) throw approveErr;
 
         const { data: finalTxn } = await supabase.from('transactions').select('status, assigned_account_id').eq('id', txn.id).single();
+        if (!finalTxn) {
+            console.error("❌ FAILED: Transaction not found after approval.");
+            process.exit(1);
+        }
         console.log(`✅ Transaction Status: ${finalTxn.status}`);
         console.log(`✅ Final Account ID: ${finalTxn.assigned_account_id}`);
 

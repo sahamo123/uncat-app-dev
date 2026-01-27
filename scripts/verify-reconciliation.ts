@@ -20,6 +20,7 @@ async function verifyReconciliation() {
         .from('tenants')
         .insert({ business_name: 'Rule Test Corp', industry: 'Retail' })
         .select('id').single();
+    if (!tenant) throw new Error("Tenant creation failed");
 
     // 2. Setup Accounts
     const { data: stripeAcct } = await supabase.from('chart_of_accounts').insert({
@@ -29,6 +30,7 @@ async function verifyReconciliation() {
         classification: 'Asset',
         description: 'Undeposited funds from Stripe'
     }).select('id').single();
+    if (!stripeAcct) throw new Error("Account creation failed");
 
     // 3. Create Rule
     console.log("📏 Creating Rule: 'Stripe' -> 'Stripe Clearing'");
@@ -48,6 +50,7 @@ async function verifyReconciliation() {
         amount: 1500.00,
         status: 'pending'
     }).select('id').single();
+    if (!txn) throw new Error("Transaction creation failed");
 
     // 5. Run Logic
     console.log("🤖 Running Logic...");
@@ -60,6 +63,7 @@ async function verifyReconciliation() {
         .select('ai_suggested_account_id, ai_reasoning, ai_confidence_score')
         .eq('id', txn.id)
         .single();
+    if (!result) throw new Error("Result fetching failed");
 
     console.log("\n📊 Result:");
     console.log(`   - Suggested ID: ${result.ai_suggested_account_id}`);
