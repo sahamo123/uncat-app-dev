@@ -1,9 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    skewProtection: true,
-  },
+  // Basic config
 };
 
 export default nextConfig;
