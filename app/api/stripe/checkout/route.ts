@@ -3,7 +3,7 @@ import { auth, currentUser } from '@clerk/nextjs/server';
 import { stripe } from '@/lib/stripe';
 import { getSupabaseAdmin } from '@/lib/supabase-admin';
 
-export async function POST(req: Request) {
+export async function POST(_req: Request) {
     const supabaseAdmin = getSupabaseAdmin();
     try {
         const { userId } = await auth();

@@ -27,7 +27,8 @@ export async function performSync(tenantId: string) {
             throw new Error(`No QBO connection found for tenant ${tenantId}`);
         }
 
-        let { access_token, refresh_token, realm_id, access_token_expires_at, refresh_token_expires_at } = connection;
+        const { realm_id, access_token_expires_at, refresh_token_expires_at } = connection;
+        let { access_token, refresh_token } = connection;
 
         // 2. Check Token Expiry & Refresh if needed
         const now = new Date();

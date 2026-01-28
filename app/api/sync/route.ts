@@ -3,7 +3,7 @@ import { performSync } from '@/lib/qbo-sync';
 import { auth } from '@clerk/nextjs/server';
 import { getSupabaseAdmin } from '@/lib/supabase-admin';
 
-export async function POST(req: Request) {
+export async function POST(_req: Request) {
     // Init DB to find tenant from user
     const supabaseAdmin = getSupabaseAdmin();
 

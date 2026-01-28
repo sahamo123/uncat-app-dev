@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     }
 
     try {
-        const { transactionId, action, accountId, reasoning } = await req.json();
+        const { transactionId, action, accountId } = await req.json();
 
         // 1. Validate Tenant Ownership (Security)
         // Find tenant owned by this user
