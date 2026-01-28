@@ -64,7 +64,7 @@ export default function DecisionTreeWizard({ onComplete, onCancel }: Props) {
         return (
             <div className="p-6 bg-red-50 text-red-700 rounded-lg">
                 <AlertCircle className="w-6 h-6 mb-2" />
-                Error: Node "{currentNodeKey}" not found in tree.
+                Error: Node &quot;{currentNodeKey}&quot; not found in tree.
                 <button onClick={handleBack} className="block mt-4 text-sm underline">Go Back</button>
             </div>
         );
@@ -110,8 +110,10 @@ export default function DecisionTreeWizard({ onComplete, onCancel }: Props) {
                                 )}
                             </div>
                             {opt.taxNote && (
-                                <p className="text-xs text-zinc-400 mt-1 italic">
+                                <p className="text-sm text-gray-500 mt-1">
                                     ℹ️ {opt.taxNote}
+                                    <br />
+                                    Example: &quot;Is this transaction for a meal heavily attended by clients?&quot;
                                 </p>
                             )}
                         </button>
