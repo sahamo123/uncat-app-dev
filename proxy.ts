@@ -1,21 +1,27 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
-import { NextRequest, NextFetchEvent } from "next/server";
+import { NextRequest, NextFetchEvent, NextResponse } from "next/server";
 
 export default async function proxy(req: NextRequest, event: NextFetchEvent) {
-    // Manual matcher logic for Next.js 16 proxy
     const { pathname } = req.nextUrl;
-    
-    // Always run for API and protected routes
-    const isPublicPath = 
-        pathname === "/" || 
-        pathname === "/pricing" ||
-        pathname.startsWith("/sign-in") || 
-        pathname.startsWith("/sign-up") ||
-        pathname.match(/\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)$/);
 
-    if (isPublicPath) {
-        return;
+    // LOG EVERYTHING to debug 404
+    console.log(`PROXY_HIT: ${req.method} ${pathname}`);
+
+    // 1. Skip static assets and internal Next.js paths
+    if (
+        pathname.startsWith('/_next') ||
+        pathname.includes('favicon.ico') ||
+        pathname.match(/\.(?:css|js|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)$/)
+    ) {
+        return NextResponse.next();
     }
 
-    return clerkMiddleware(req, event);
+    try {
+        const res = await clerkMiddleware()(req, event);
+        console.log(`CLERK_RES: ${pathname} -> ${res?.status || 'no-res'}`);
+        return res || NextResponse.next();
+    } catch (error) {
+        console.error("Clerk Middleware Error:", error);
+        return NextResponse.next();
+    }
 }
