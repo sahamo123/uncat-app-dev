@@ -83,7 +83,7 @@ export default function TransactionReview({ transactions: initialTransactions, a
                 </div>
                 <h3 className="text-xl font-semibold mb-2">All Caught Up!</h3>
                 <p className="text-muted-foreground max-w-sm mx-auto">
-                    You've reviewed all pending transactions. Great job keeping your books clean!
+                    You&apos;ve reviewed all pending transactions. Great job keeping your books clean!
                 </p>
                 <div className="mt-8">
                     <Button variant="outline" onClick={() => router.refresh()}>Refresh List</Button>
@@ -139,7 +139,7 @@ export default function TransactionReview({ transactions: initialTransactions, a
                                     {txn.suggested_account_name || 'Unknown Account'}
                                 </div>
                                 <p className="text-sm text-muted-foreground italic">
-                                    "{txn.ai_reasoning}"
+                                    &quot;{txn.ai_reasoning}&quot;
                                 </p>
                             </div>
                         </CardContent>
