@@ -4,9 +4,6 @@ import { NextRequest, NextFetchEvent, NextResponse } from "next/server";
 export default async function proxy(req: NextRequest, event: NextFetchEvent) {
     const { pathname } = req.nextUrl;
 
-    // LOG EVERYTHING to debug 404
-    console.log(`PROXY_HIT: ${req.method} ${pathname}`);
-
     // 1. Skip static assets and internal Next.js paths
     if (
         pathname.startsWith('/_next') ||
@@ -17,9 +14,8 @@ export default async function proxy(req: NextRequest, event: NextFetchEvent) {
     }
 
     try {
-        const res = await clerkMiddleware()(req, event);
-        console.log(`CLERK_RES: ${pathname} -> ${res?.status || 'no-res'}`);
-        return res || NextResponse.next();
+        // clerkMiddleware can be called directly as per latest Clerk types
+        return clerkMiddleware(req, event);
     } catch (error) {
         console.error("Clerk Middleware Error:", error);
         return NextResponse.next();
