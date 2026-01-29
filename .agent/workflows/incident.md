@@ -7,60 +7,159 @@ description: Document and track incidents with detailed knowledge files
 This workflow creates detailed incident knowledge files for self-healing documentation.
 
 ## Usage
-Run this workflow when resolving a critical or major incident to create a permanent record.
+Trigger with `/incident` when resolving a critical or major incident.
 
 ## Prerequisites
-- Incident has been resolved (or root cause identified)
-- Incident logged in `incident_log.md`
+- Incident identified (error observed, symptoms captured)
+- Root cause analysis started or completed
 
-## Steps
+---
 
-### 1. Identify Incident Details
-Gather the following information:
-- Incident ID (from incident_log.md, e.g., "008")
-- Date resolved (YYYY-MM-DD format)
-- Short description (3-5 words, kebab-case)
+## Step 1: Confirm Incident Details (REQUIRED)
 
-### 2. Create Incident File
-// turbo
-Create new file with naming convention:
+**STOP AND CONFIRM WITH USER:**
+
+Before proceeding, display the following to the user:
+
 ```
-knowledge_base/incidents/INC-XXX_YYYY-MM-DD_short-description.md
-```
+📋 Recording the following incident(s):
 
-**Example**: `INC-008_2026-01-29_vercel-404-framework-detection.md`
+| # | ID | Title | Severity |
+|---|-----|-------|----------|
+| 1 | INC-XXX | [Brief title] | 🔴 Critical / 🟡 Major / 🟢 Minor |
 
-### 3. Use Template
-Copy contents from `knowledge_base/incidents/_template.md` and fill in all sections:
-- Metadata table
-- Symptom (include exact error messages)
-- Impact
-- Root Cause Analysis (primary + contributing factors)
-- Investigation Timeline
-- Resolution (steps + code changes)
-- Prevention (immediate + long-term)
-- Related Resources
-- Keywords
-
-### 4. Add Screenshots
-If applicable, embed screenshots from the incident:
-```markdown
-![Description](file:///path/to/screenshot.png)
+Is this correct? (yes/no)
+- If multiple incidents, list each
+- Wait for user confirmation before proceeding
 ```
 
-### 5. Update Incident Log
-Mark the incident as ✅ Resolved in `incident_log.md` and add reference to detailed file:
-```markdown
-**Detailed Analysis**: See `incidents/INC-XXX_YYYY-MM-DD_description.md`
-```
+**Do NOT proceed until user confirms.**
 
-### 6. Commit Changes
+---
+
+## Step 2: Determine Incident ID
+
 // turbo
 ```bash
-git add knowledge_base/incidents/
-git commit -m "docs: add detailed incident file for INC-XXX"
-git push
+# Count existing incidents to determine next ID
+ls -la docs/incidents/resolved/ | wc -l
+ls -la docs/incidents/open/ | wc -l
 ```
+
+Format: `INC-XXX` where XXX is zero-padded (001, 002, ... 010, 011, ...)
+
+---
+
+## Step 3: Create Incident File
+
+**For OPEN incidents** (still investigating):
+```
+docs/incidents/open/INC-XXX_YYYY-MM-DD_short-description.md
+```
+
+**For RESOLVED incidents** (fix verified):
+```
+docs/incidents/resolved/INC-XXX_YYYY-MM-DD_short-description.md
+```
+
+Copy template from `docs/incidents/_template.md` and fill ALL sections:
+- Metadata table (ID, dates, severity, status)
+- Symptom (exact error messages)
+- Impact
+- Root Cause Analysis
+- Investigation Timeline
+- Resolution steps
+- Code changes with diffs
+- Fixing commit/PR links
+- Prevention strategies
+- Keywords for search
+
+---
+
+## Step 4: Copy Screenshots (if applicable)
+
+// turbo
+If screenshots exist, copy to assets folder:
+```bash
+mkdir -p docs/incidents/assets/INC-XXX/
+# Copy screenshot files here
+```
+
+Update incident file with relative paths:
+```markdown
+![Error Screenshot](../assets/INC-XXX/screenshot.png)
+```
+
+---
+
+## Step 5: Update Incident Log
+
+Add summary entry to `docs/incidents/incident_log.md`:
+
+```markdown
+### INCIDENT-XXX: [Title]
+| Field | Value |
+|-------|-------|
+| **Date** | YYYY-MM-DD |
+| **Severity** | 🔴 Critical / 🟡 Major / 🟢 Minor |
+| **Status** | 🔴 Open / ✅ Resolved |
+| **Details** | [INC-XXX_date_description.md](./resolved/INC-XXX_date_description.md) |
+
+**Summary**: One-paragraph description.
+
+**Keywords**: `keyword1`, `keyword2`
+
+---
+```
+
+---
+
+## Step 6: Add Commit/PR Link
+
+After committing the fix, update the incident file:
+
+```markdown
+### Fixing Commit/PR
+- **Commit**: [abc1234](https://github.com/sahamo123/uncat-app-dev/commit/abc1234)
+- **PR**: [#123](https://github.com/sahamo123/uncat-app-dev/pull/123)
+- **Date Merged**: YYYY-MM-DD
+```
+
+---
+
+## Step 7: Commit Changes
+
+// turbo
+```bash
+git add docs/incidents/
+git commit -m "docs: add INC-XXX incident documentation - [brief description]"
+git push origin main
+```
+
+---
+
+## Step 8: Resolve Open Incidents
+
+When an open incident is resolved:
+
+// turbo
+1. Move file from `open/` to `resolved/`:
+```bash
+mv docs/incidents/open/INC-XXX_*.md docs/incidents/resolved/
+```
+
+2. Update status in incident file and incident_log.md:
+   - Change `🔴 Open` to `✅ Resolved`
+   - Add resolution date and commit link
+
+3. Commit the move:
+```bash
+git add docs/incidents/
+git commit -m "docs: resolve INC-XXX - [brief description]"
+git push origin main
+```
+
+---
 
 ## File Naming Reference
 
@@ -68,12 +167,21 @@ git push
 |-----------|--------|---------|
 | Prefix | `INC-XXX` | `INC-008` |
 | Date | `YYYY-MM-DD` | `2026-01-29` |
-| Description | `kebab-case` | `vercel-404-framework-detection` |
-| Full Name | Combined | `INC-008_2026-01-29_vercel-404-framework-detection.md` |
+| Description | `kebab-case` (3-5 words) | `vercel-404-framework` |
+| Full Name | Combined | `INC-008_2026-01-29_vercel-404-framework.md` |
+
+---
 
 ## Quality Checklist
+
+Before completing the workflow, verify:
+
 - [ ] Error message included verbatim
 - [ ] Root cause clearly identified
+- [ ] Timeline shows investigation steps
+- [ ] Code changes shown with diffs
+- [ ] Commit/PR link added
 - [ ] Prevention strategies documented
 - [ ] Keywords added for searchability
-- [ ] incident_log.md updated with status
+- [ ] incident_log.md updated with summary
+- [ ] All changes committed and pushed
